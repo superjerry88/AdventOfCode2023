@@ -16,36 +16,38 @@ class Game
 
     public Game(string input)
     {
-        Id = int.Parse(input.Split(' ')[1].Replace(":", ""));
-        var groups = input.Split(':')[1].Trim().Split(';');
+        var parts = input.Split(':', 2);
+        Id = int.Parse(parts[0].Split(' ')[1]);
 
-        foreach (var text in groups)
+        foreach (var group in parts[1].Trim().Split(';'))
         {
-            var set = new Set();
-            var cubeCounts = text.Trim().Split(',');
-
-            foreach (var cubeCount in cubeCounts)
-            {
-                var parts = cubeCount.Trim().Split(' ');
-                var count = int.Parse(parts[0]);
-                var color = parts[1];
-
-                switch (color)
-                {
-                    case "red":
-                        set.Red = count;
-                        break;
-                    case "green":
-                        set.Green = count;
-                        break;
-                    case "blue":
-                        set.Blue = count;
-                        break;
-                }
-            }
-
-            Sets.Add(set);
+            Sets.Add(CreateSetFromText(group));
         }
+    }
+
+    private Set CreateSetFromText(string text)
+    {
+        var set = new Set();
+        foreach (var cubeCount in text.Trim().Split(','))
+        {
+            var parts = cubeCount.Trim().Split(' ');
+            var count = int.Parse(parts[0]);
+            var color = parts[1];
+
+            switch (color)
+            {
+                case "red":
+                    set.Red = count;
+                    break;
+                case "green":
+                    set.Green = count;
+                    break;
+                case "blue":
+                    set.Blue = count;
+                    break;
+            }
+        }
+        return set;
     }
 
     public bool IsLegal()
