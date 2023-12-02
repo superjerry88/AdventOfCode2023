@@ -1,8 +1,13 @@
 ﻿using System.Text.RegularExpressions;
 
 var lines = File.ReadAllLines("Input.txt");
+
+//Part1
 Console.WriteLine(lines.Sum(x => GetSimpleNumberEx(x, false)));
+
+//Part2
 Console.WriteLine(lines.Sum(x => GetSimpleNumberEx(x, true)));
+
 return;
 
 static int GetSimpleNumberEx(string input, bool useEnglish)
