@@ -1,7 +1,4 @@
-﻿
-
-using System.Diagnostics;
-//var lines = File.ReadAllLines("Example.txt");
+﻿//var lines = File.ReadAllLines("Example.txt");
 var lines = File.ReadAllLines("Input.txt");
 
 var times = lines[0].Split(' ').Skip(1).Where(c => !string.IsNullOrEmpty(c)).Select(long.Parse).ToList();
