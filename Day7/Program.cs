@@ -1,12 +1,8 @@
 ﻿var lines = File.ReadAllLines("Input.txt");
-
 var inputs = lines.Select(line => new Hand(line)).ToList();
-
 
 Console.WriteLine("[Part 1] Total Winnings: " + CalculateTotalWInning(inputs,false));
 Console.WriteLine("[Part 2] Total Winnings: " + CalculateTotalWInning(inputs,true));
-
-
 return;
 
 int CalculateTotalWInning(List<Hand> hands, bool useJokerRule)
@@ -54,7 +50,6 @@ public class Hand
         var parts = line.Split(' ');
         CardValue = parts[0];
         Bid = int.Parse(parts[1]);
-        //CalculateHandType();
     }
 
     public int GetWinning(int multiplier)
@@ -116,9 +111,3 @@ public class Hand
     }
 
 }
-
-
-
-
-
-
