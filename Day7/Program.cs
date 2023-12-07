@@ -1,11 +1,11 @@
 ﻿var lines = File.ReadAllLines("Input.txt");
 var inputs = lines.Select(line => new Hand(line)).ToList();
 
-Console.WriteLine("[Part 1] Total Winnings: " + CalculateTotalWInning(inputs,false));
-Console.WriteLine("[Part 2] Total Winnings: " + CalculateTotalWInning(inputs,true));
+Console.WriteLine("[Part 1] Total Winnings: " + CalculateTotalWinning(inputs,false));
+Console.WriteLine("[Part 2] Total Winnings: " + CalculateTotalWinning(inputs,true));
 return;
 
-int CalculateTotalWInning(List<Hand> hands, bool useJokerRule)
+int CalculateTotalWinning(List<Hand> hands, bool useJokerRule)
 {
     foreach (var hand in hands)
     {
@@ -40,10 +40,10 @@ public class Hand
     private static readonly string NormalOrder = "23456789TJQKA";
     private static readonly string JokerOrder = "J23456789TQKA";
 
-    public string CardValue { get; private set; }
-    public int Bid { get; private set; }
+    public string CardValue { get; }
+    public int Bid { get; }
     public HandType Type { get; private set; }
-    public bool JokerRule { get; set; } = false;
+    public bool JokerRule { get; set; }
 
     public Hand(string line)
     {
@@ -55,12 +55,6 @@ public class Hand
     public int GetWinning(int multiplier)
     {
         return Bid * multiplier;
-    }
-
-    private int GetCardValue(char card)
-    {
-        if (JokerRule && card == 'J') return -1;
-        return NormalOrder.IndexOf(card);
     }
 
     public void CalculateHandType()
@@ -82,11 +76,16 @@ public class Hand
         Type = bestHandType;
     }
 
+    public string SortedIndex()
+    {
+        var order = JokerRule ? JokerOrder : NormalOrder;
+        return string.Concat(CardValue.Select(c => (char)('A' + order.IndexOf(c))));
+    }
+
     private HandType DetermineHandType(string handValue)
     {
         var grouping = handValue.GroupBy(c => c)
             .OrderByDescending(g => g.Count())
-            .ThenByDescending(g => GetCardValue(g.Key))
             .ToList();
 
         switch (grouping[0].Count())
@@ -103,11 +102,4 @@ public class Hand
                 return HandType.HighCard;
         }
     }
-
-    public string SortedIndex()
-    {
-        var order = JokerRule ? JokerOrder : NormalOrder;
-        return string.Concat(CardValue.Select(c => (char)('A' + order.IndexOf(c))));
-    }
-
 }
